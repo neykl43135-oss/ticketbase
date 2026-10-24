@@ -1,0 +1,108 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+/generated/prisma
+
+# Local databases and backups
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.bak
+*.before-*
+
+# Local logs
+*.log
+
+ticketbase-secrets.env
+
+
+# TicketBase production secrets
+.ticketbase-secrets.env
+.ticketbase-secrets.env.*
+
+# TicketBase local secrets, databases and backups
+.env*
+*ticketbase-secrets.env*
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.bak
+*.backup*
+*.pem
+*.log
+/generated/prisma/
+/node_modules/
+/.next/
+
+# Local backups and temporary inspection scripts
+/backups/
+*.before-*
+*.preview.bak
+*-temp.ts
+*-temp.js
+*-temp.cjs
+
+# Local AI/editor configuration
+/.agents/
+/.claude/
+/.windsurf/
+
+# Accidental empty file
+/=
+
+# Local page backups
+/app/page.tsx.*-backup
+/app/page.tsx.*.bak
+
+# Local diagnostics, not needed for deployment
+/check-test-event.ts
+/inspect-sellers.cjs
+/rename-demo-sellers.cjs
+
+# Local project instructions and deployment-only helpers
+/AGENTS.md
+/CLAUDE.md
+/skills-lock.json
+/scripts/
+/tests/

@@ -1,0 +1,6 @@
+-- CreateTable
+CREATE TABLE "HomepageSettings" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT DEFAULT 1,
+    "historicalDeals" INTEGER NOT NULL DEFAULT 3236,
+    "updatedAt" DATETIME NOT NULL
+);

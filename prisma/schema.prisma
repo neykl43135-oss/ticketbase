@@ -1,0 +1,152 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Event {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  category    String
+  venue       String
+  city        String
+  date        DateTime
+  time        String?
+  description String
+  image       String?
+  status      String   @default("active")
+  featured    Boolean  @default(false)
+  homepageOrder Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  ticketListings TicketListing[]
+}
+
+model Seller {
+  id           Int      @id @default(autoincrement())
+  displayName  String
+  email        String?  @unique
+  passwordHash String?
+  verified               Boolean  @default(false)
+  typicalTransferMinutes Int?
+  status                 String   @default("active")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  ticketListings TicketListing[]
+
+  @@index([verified, status])
+}
+
+model TicketListing {
+  id                  Int      @id @default(autoincrement())
+  eventId             Int
+  sellerId            Int
+  quantity            Int
+  quantityAvailable   Int
+  minQuantity         Int      @default(1)
+  pricePerTicketCents Int
+  currency            String   @default("EUR")
+  ticketType          String?
+  section             String?
+  row                 String?
+  seats               String?
+  sourcePlatform      String?
+  transferMethod      String?
+  description         String?
+  status              String   @default("active")
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
+  event  Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  seller Seller @relation(fields: [sellerId], references: [id], onDelete: Restrict)
+
+  orders Order[]
+
+  @@index([eventId, status])
+  @@index([sellerId, status])
+  @@index([status, pricePerTicketCents])
+}
+
+model Buyer {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  displayName  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  orders Order[]
+}
+
+model Order {
+  id          Int    @id @default(autoincrement())
+  orderNumber String @unique
+
+  buyerEmail    String
+  paymentMethod String
+  status        String @default("pending_payment")
+
+  quantity            Int
+  currency            String @default("EUR")
+  pricePerTicketCents Int
+  subtotalCents       Int
+  buyerFeeCents       Int
+  totalCents          Int
+
+  paymentInstructions String    @default("")
+  paymentSubmittedAt  DateTime?
+  paymentConfirmedAt  DateTime?
+  expiresAt           DateTime?
+  adminNote           String?
+
+  buyerId         Int?
+  buyer           Buyer?        @relation(fields: [buyerId], references: [id], onDelete: SetNull)
+  ticketListingId Int
+  ticketListing   TicketListing @relation(fields: [ticketListingId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([buyerEmail])
+  @@index([buyerId])
+}
+
+model PaymentSettings {
+  id Int @id @default(1)
+
+  bankTransferEnabled      Boolean @default(true)
+  bankTransferInstructions String  @default("")
+
+  revolutEnabled      Boolean @default(true)
+  revolutInstructions String  @default("")
+  revolutInstruction1 String  @default("")
+  revolutInstruction2 String  @default("")
+  revolutInstruction3 String  @default("")
+  revolutInstruction4 String  @default("")
+  revolutInstruction5 String  @default("")
+  revolutNextIndex    Int     @default(0)
+
+  paypalEnabled      Boolean @default(true)
+  paypalInstructions String  @default("")
+  paypalInstruction1 String  @default("")
+  paypalInstruction2 String  @default("")
+  paypalInstruction3 String  @default("")
+  paypalInstruction4 String  @default("")
+  paypalInstruction5 String  @default("")
+  paypalNextIndex    Int     @default(0)
+
+  updatedAt DateTime @updatedAt
+}
+
+model HomepageSettings {
+  id             Int      @id @default(1)
+  historicalDeals Int     @default(3236)
+  updatedAt      DateTime @updatedAt
+}

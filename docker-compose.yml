@@ -1,0 +1,17 @@
+services:
+  ticketbase:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ticketbase
+    restart: unless-stopped
+    init: true
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      NODE_ENV: production
+      DATABASE_URL: "file:/data/dev.db"
+    env_file:
+      - ./.ticketbase-secrets.env
+    volumes:
+      - /opt/ticketbase/data:/data

@@ -1,0 +1,29 @@
+﻿node_modules
+.next
+.git
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite
+*.sqlite3
+*.bak
+*.backup*
+*.log
+coverage
+test-results
+playwright-report
+.turbo
+.vercel
+.windsurf
+.claude
+.agents
+
+# TicketBase production secrets
+.ticketbase-secrets.env
+.ticketbase-secrets.env.*
+
+# Never include production secrets in Docker build context
+.ticketbase-secrets.env
+ticketbase-secrets.env
+*ticketbase-secrets.env*
